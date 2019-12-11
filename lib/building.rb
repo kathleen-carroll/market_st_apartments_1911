@@ -17,4 +17,14 @@ class Building
     end
     avg = (sum_rent.to_f/@units.length.to_f)
   end
+
+  def renter_with_highest_rent
+    units_rented = @units.find_all do |unit|
+                    unit.renter != nil
+                    end
+    max = units_rented.max do |a, b|
+            a.monthly_rent <=> b.monthly_rent
+          end
+    max.renter
+  end
 end
