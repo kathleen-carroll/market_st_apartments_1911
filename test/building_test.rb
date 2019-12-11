@@ -10,7 +10,7 @@ class BuildingTest < Minitest::Test
     @unit1 = Apartment.new({number: "A1", monthly_rent: 1200, bathrooms: 1, bedrooms: 1})
     @unit2 = Apartment.new({number: "B2", monthly_rent: 999, bathrooms: 2, bedrooms: 2})
     @unit3 = Apartment.new({number: "C3", monthly_rent: 1150, bathrooms: 2, bedrooms: 2})
-    @unit4 = Apartment.new({number: "D4", monthly_rent: 1500, bathrooms: 3, bedrooms: 2})
+    #@unit4 = Apartment.new({number: "D4", monthly_rent: 1500, bathrooms: 3, bedrooms: 2})
     @renter1 = Renter.new("Spencer")
     @renter2 = Renter.new("Jessie")
     @renter3 = Renter.new("Max")
@@ -48,5 +48,22 @@ class BuildingTest < Minitest::Test
 
     @unit3.add_renter(@renter3)
     assert_equal @renter2, @building.renter_with_highest_rent
+  end
+
+  def test_it_can_evaluate_annual_building_breakdown
+    @building.add_unit(@unit1)
+    @building.add_unit(@unit2)
+    @building.add_unit(@unit3)
+    @unit2.add_renter(@renter1)
+    expected = { "Spencer" => 11988 }
+    actual = @building.annual_breakdown
+
+    assert_equal expected, actual
+
+    @unit1.add_renter(@renter2)
+    new_expected = {"Jessie" => 14400, "Spencer" => 11988}
+    new_actual = @building.annual_breakdown
+
+    assert_equal new_expected, new_actual
   end
 end
